@@ -12,30 +12,31 @@ import { useDispatch, useSelector } from 'react-redux'
 export default function DetailsUpdate() {
   const navigate = useNavigate()
 
-  const details = useSelector(selectDetails)
-  const userDetails = useSelector((state) => state.details.user_details)
-
   const [userData, setUserData] = useState({
     age: 0,
     weight: 0,
     height: 0,
-    gender: 'Male',
   })
 
+  const details = useSelector(selectDetails)
+  const userDetails = useSelector((state) => state.details.user_details)
+
   useEffect(() => {
-    dispatch(getDetailsAsync())
-    setUserData({
-      age: userDetails.age,
-      weight: userDetails.weight,
-      height: userDetails.height,
-      gender: userDetails.gender,
-    })
-    console.log(userDetails)
+    async function fetchData() {
+      const response = await dispatch(getDetailsAsync())
+      setUserData({
+        age: userDetails.age,
+        weight: userDetails.weight,
+        height: userDetails.height,
+      })
+    }
+    fetchData()
   }, [])
 
-  useEffect(() => {}, [userDetails])
+  useEffect(() => {
+    console.log(userData)
+  }, [userData])
 
-  console.log(userDetails)
   const dispatch = useDispatch()
   const submit = async (e) => {
     e.preventDefault()

@@ -18,6 +18,8 @@ export default function FoodTracker() {
   const [deleteCard, setDelete] = useState([])
   const [change, setChange] = useState(0)
   const [save, setSave] = useState(0)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const food = useSelector(selectFood)
   var data = useSelector((state) => state.food.data)
   var caloriesConsumed = useSelector((state) => state.food.calories)
@@ -32,11 +34,6 @@ export default function FoodTracker() {
     dinner: ['Apple', 'Upma', 'Vada', 'Chutney'],
     calories: 2400,
   }
-
-  const [consumed, setConsumed] = useState({
-    calories: 0,
-    date: new Date().toISOString().slice(0, 10),
-  })
 
   useEffect(() => {
     if (foodStatus === 'idle' || foodStatus === 'loading')
@@ -90,6 +87,8 @@ export default function FoodTracker() {
           </div>
         </div>
       </div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {success && <div style={{ color: 'red' }}>{success}</div>}
       <div
         className='text-center'
         style={{ display: click._id ? 'block' : 'none' }}
@@ -102,6 +101,8 @@ export default function FoodTracker() {
               caloriesConsumed[caloriesConsumed.length - 1]?.date ===
               new Date().toISOString().slice(0, 10)
             ) {
+              setError('can only add once a day.')
+              setChange(1)
               return
             } else {
               dispatch(
@@ -110,13 +111,15 @@ export default function FoodTracker() {
                   date: new Date().toISOString().slice(0, 10),
                 })
               )
+              setSuccess('added')
+              setChange(1)
             }
           }}
         >
           Save
         </button>
       </div>
-      <div className='grid grid-cols-4 gap-4 text-center'>
+      <div className='grid gap-4 text-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
         {foodData.map((ele) => {
           return (
             <div
@@ -154,9 +157,7 @@ export default function FoodTracker() {
                   <AiTwotoneDelete />
                 </span>
               </div>
-              <div className='font-bold text-xl mb-2 text-center '>
-                Monday diet
-              </div>
+              <div className='font-bold text-xl mb-2 text-center '>diet</div>
               <div className='pl-4 text-left font-bold'>Breakfast</div>
               <div className='pl-4 text-left mb-4'>
                 {ele.breakfast.map((food, i) => {

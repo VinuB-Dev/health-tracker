@@ -1,13 +1,7 @@
 import Navbar from '../../components/Navbar'
-import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  selectHappy,
-  getHappyAsync,
-  addNote,
-  setHappyAsync,
-} from './happySlice'
+import { selectHappy, getHappyAsync, setHappyAsync } from './happySlice'
 
 export default function Happy() {
   const happy = useSelector(selectHappy)
@@ -53,13 +47,6 @@ export default function Happy() {
   }, [change])
 
   const streakCalculator = () => {
-    // let datelist = [
-    //   { date: '27-06-2021' },
-    //   { date: '28-06-2021' },
-    //   { date: '29-06-2021' },
-    //   { date: '30-06-2021' },
-    //   { date: '31-06-2021' },
-    // ]
     let count = 0
     happyData?.reverse().forEach((el, i) => {
       if (

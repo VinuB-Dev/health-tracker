@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectDetails } from './detailsSlice'
 import { calculateBMI, calculateCalories, calculateWeight } from '../../utils'
 export default function Result() {
@@ -32,20 +32,11 @@ export default function Result() {
                 height.
               </p>
             </div>
-            <h1 className='mb-3 text-2xl'>
-              Ideal height based on your height and gender must be&nbsp;:&nbsp;
+            <h1 className='mt-4 mb-20 text-2xl'>
+              Ideal weight based on your height and gender must be&nbsp;:&nbsp;
               <span>{Math.round(calculateWeight(user_details.height))}</span>
             </h1>
-            <div
-              class='bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'
-              role='alert'
-            >
-              <p class='font-bold'>Informational message</p>
-              <p class='text-sm'>
-                Some additional text to explain said message.
-              </p>
-            </div>
-            <h1 className='mb-3 text-2xl'>
+            <h1 className='mt-4 mb-6 text-2xl'>
               Daily calorie consumption to reach ideal weight&nbsp;:&nbsp;
               <span>
                 {Math.round(
@@ -55,15 +46,6 @@ export default function Result() {
                 )}
               </span>
             </h1>
-            <div
-              class='bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'
-              role='alert'
-            >
-              <p class='font-bold'>Informational message</p>
-              <p class='text-sm'>
-                Some additional text to explain said message.
-              </p>
-            </div>
             <button
               class='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-8'
               onClick={() => {

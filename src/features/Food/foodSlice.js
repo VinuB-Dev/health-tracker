@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { data } from 'autoprefixer'
 import axios from 'axios'
 import { getAuthToken } from '../../utils'
 
@@ -42,7 +41,6 @@ export const addListAsync = createAsyncThunk(
 export const updateListAsync = createAsyncThunk(
   'food/updateList',
   async ({ listid, breakfast, lunch, dinner, calories }) => {
-    console.log()
     const response = await axios.post(
       'https://healthTracker.bravesoldier.repl.co/food/updateList',
       {

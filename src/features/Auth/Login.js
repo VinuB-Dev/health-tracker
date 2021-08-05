@@ -1,17 +1,16 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { loginAsync } from './authSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectDetails, getDetailsAsync } from '../Details/detailsSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Login() {
   const navigate = useNavigate()
-  const details = useSelector(selectDetails)
-  const userDetails = useSelector((state) => state.details.user_details)
   const [userData, setUserData] = useState({
     email: '',
     password: '',
   })
+  const [error, setError] = useState(0)
+
   const dispatch = useDispatch()
   const submit = async (e) => {
     e.preventDefault()
@@ -22,10 +21,9 @@ export default function Login() {
       })
     )
     if (response.payload?.success) {
-      await dispatch(getDetailsAsync())
-      console.log(userDetails)
-      if (userDetails.age > 0) navigate('/')
-      else navigate('/details')
+      navigate('/')
+    } else {
+      setError(1)
     }
   }
 
@@ -44,6 +42,14 @@ export default function Login() {
             className='bg-white px-6 py-6 rounded shadow-md text-black w-full pt-5 mt-10'
             onSubmit={submit}
           >
+            {error ? (
+              <div>
+                <h3 style={{ color: 'red' }}>Username or password wrong</h3>
+                <h3 style={{ color: '#065F46' }}>Signup if u haven't yet</h3>
+              </div>
+            ) : (
+              <div></div>
+            )}
             <h1 className='mb-5 text-3xl text-center pb-1'>Login</h1>
             <h1 className='mb-5 text-xl text-left ml-2'>Username</h1>
             <input
@@ -67,15 +73,19 @@ export default function Login() {
               value={userData.password}
             />
             <button
-              class='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+              className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
               type='submit'
             >
               Login
             </button>
-            <h1>
+            <h1
+              className='mt-4 rounded p-2'
+              style={{ backgroundColor: '#A7F3D0' }}
+            >
               Not registered yet?{' '}
               <span
-                class='text-teal-700 cursor-pointer'
+                className='cursor-pointer'
+                style={{ color: '#065F46' }}
                 onClick={() => {
                   navigate('/signup')
                 }}

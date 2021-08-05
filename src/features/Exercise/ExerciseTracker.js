@@ -18,6 +18,8 @@ export default function ExcerciseTracker() {
   const [deleteCard, setDelete] = useState([])
   const [change, setChange] = useState(0)
   const [save, setSave] = useState(0)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const exercise = useSelector(selectExercise)
   var data = useSelector((state) => state.exercise.data)
   const exerciseData = data
@@ -41,13 +43,6 @@ export default function ExcerciseTracker() {
   }, [change])
 
   const streakCalculator = () => {
-    // let datelist = [
-    //   { date: '27-06-2021' },
-    //   { date: '28-06-2021' },
-    //   { date: '29-06-2021' },
-    //   { date: '30-06-2021' },
-    //   { date: '31-06-2021' },
-    // ]
     let count = 0
     caloriesConsumed?.reverse().forEach((el, i) => {
       if (
@@ -88,6 +83,8 @@ export default function ExcerciseTracker() {
           </div>
         </div>
       </div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {success && <div style={{ color: 'red' }}>{success}</div>}
       <div
         className='text-center'
         style={{ display: click._id ? 'block' : 'none' }}
@@ -100,6 +97,8 @@ export default function ExcerciseTracker() {
               caloriesConsumed[caloriesConsumed.length - 1]?.date ===
               new Date().toISOString().slice(0, 10)
             ) {
+              setError('can only add once a day.')
+              setChange(1)
               return
             } else {
               dispatch(
@@ -108,13 +107,15 @@ export default function ExcerciseTracker() {
                   date: new Date().toISOString().slice(0, 10),
                 })
               )
+              setSuccess('added')
+              setChange(1)
             }
           }}
         >
           Save
         </button>
       </div>
-      <div class='grid grid-cols-4 gap-4 text-center'>
+      <div class='grid gap-4 text-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
         {exerciseData.map((ele) => {
           return (
             <div
@@ -152,7 +153,6 @@ export default function ExcerciseTracker() {
                   <AiTwotoneDelete />
                 </span>
               </div>
-              <div className='font-bold text-xl mb-2 text-center '>Leg Day</div>
               <div className='pl-4 text-left font-bold'>Exercises</div>
               <div className='pl-4 text-left mb-4'>
                 {ele.exercises.map((exercise, i) => {

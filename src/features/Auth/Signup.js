@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { signupAsync } from './authSlice'
 import { useDispatch } from 'react-redux'
 
@@ -16,6 +16,7 @@ export default function Signup() {
 
   const [confirmpasswordValid, updateConfirmPasswordValid] = useState(true)
   const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,10 +25,7 @@ export default function Signup() {
 
   const submit = async (e) => {
     e.preventDefault()
-    updateConfirmPasswordValid(
-      userData['confirm password'] === userData['password']
-    )
-    if (!error) {
+    if (userData['confirm password'] === userData['password']) {
       const response = await dispatch(
         signupAsync({
           name: userData['name'],
@@ -36,11 +34,14 @@ export default function Signup() {
         })
       )
       if (response.payload?.success) {
-        console.log(response.payload)
         navigate('/details')
       } else {
-        console.log(response.error)
+        setError(true)
+        setErrorMessage('User already exists')
       }
+    } else {
+      setErrorMessage('password dont match')
+      setError(true)
     }
   }
 
@@ -59,6 +60,13 @@ export default function Signup() {
             className='bg-white px-6 py-6 rounded shadow-md text-black w-full pt-5 mt-10'
             onSubmit={submit}
           >
+            {error ? (
+              <div>
+                <h3 style={{ color: 'red' }}>{errorMessage}</h3>
+              </div>
+            ) : (
+              <div></div>
+            )}
             <h1 className='mb-5 text-2xl text-center pb-1'>Signup</h1>
             <h1 className='mb-5 text-xl text-left ml-2'>Email</h1>
             <input
@@ -71,13 +79,12 @@ export default function Signup() {
               autoComplete='off'
               onChange={onChangeHandler}
             />
-            <h1 className='mb-5 text-xl text-left ml-2'>name</h1>
+            <h1 className='mb-5 text-xl text-left ml-2'>Name</h1>
             <input
               id='name'
               type='text'
               className='block border border-grey-light w-full p-2 rounded mb-4 focus:outline-none focus:ring'
               value={userData.name}
-              type='text'
               required
               placeholder='Enter your name'
               autoComplete='off'
@@ -89,7 +96,6 @@ export default function Signup() {
               type='password'
               className='block border border-grey-light w-full p-2 rounded mb-4 focus:outline-none focus:ring'
               value={userData.password}
-              type='password'
               required
               placeholder='Enter Password'
               onChange={onChangeHandler}
@@ -100,7 +106,6 @@ export default function Signup() {
               type='password'
               className='block border border-grey-light w-full p-2 rounded mb-4 focus:outline-none focus:ring'
               value={userData['confirm password']}
-              type='password'
               required
               placeholder='Confirm Password'
               onChange={onChangeHandler}
