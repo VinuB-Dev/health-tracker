@@ -44,7 +44,8 @@ export default function ExcerciseTracker() {
 
   const streakCalculator = () => {
     let count = 0
-    caloriesConsumed?.reverse().forEach((el, i) => {
+    const reverseArray = [...caloriesConsumed]
+    reverseArray.reverse().forEach((el, i) => {
       if (
         new Date().setUTCHours(0, 0, 0, 0) -
           new Date(el.date).setUTCHours(0, 0, 0, 0) ===

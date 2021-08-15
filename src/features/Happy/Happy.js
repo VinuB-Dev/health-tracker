@@ -48,7 +48,8 @@ export default function Happy() {
 
   const streakCalculator = () => {
     let count = 0
-    happyData?.reverse().forEach((el, i) => {
+    const reverseArray = [...happyData]
+    reverseArray?.reverse().forEach((el, i) => {
       if (
         new Date().setUTCHours(0, 0, 0, 0) -
           new Date(el.date).setUTCHours(0, 0, 0, 0) ===
@@ -102,19 +103,22 @@ export default function Happy() {
         <div>Previous day notes</div>
       </div>
       <div class='grid grid-cols-3 gap-4 text-center auto-cols-auto justify-center'>
-        {happyData.map((happy) => {
-          return (
-            <div
-              class='container border-2 border-black p-2'
-              style={{
-                backgroundColor: happy.happy > 5 ? '#6EE7B7' : '#FCA5A5',
-              }}
-            >
-              <div className='text-right'>{happy.date}</div>
-              {happy.note}
-            </div>
-          )
-        })}
+        {happyData
+          .slice(0)
+          .reverse()
+          .map((happy) => {
+            return (
+              <div
+                class='container border-2 border-black p-2'
+                style={{
+                  backgroundColor: happy.happy > 5 ? '#6EE7B7' : '#FCA5A5',
+                }}
+              >
+                <div className='text-right'>{happy.date}</div>
+                {happy.note}
+              </div>
+            )
+          })}
       </div>
     </div>
   )

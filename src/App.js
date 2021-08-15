@@ -10,6 +10,7 @@ import Details from './features/Details/details'
 import Result from './features/Details/result_page'
 import DetailsUpdate from './features/Details/detailsUpdate'
 import PrivateRoute from './PrivateRoute'
+import Dashboard from './features/Dashboard/Dashboard'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <PrivateRoute path='/details' element={<Details />} />
         <PrivateRoute path='/detailsupdate' element={<DetailsUpdate />} />
         <PrivateRoute path='/result' element={<Result />} />
+        <PrivateRoute path='/dashboard' element={<Dashboard />} />
       </Routes>
     </div>
   )
